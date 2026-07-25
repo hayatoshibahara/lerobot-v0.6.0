@@ -1,0 +1,55 @@
+# LeRobot v0.6.0
+
+## 概要
+
+LeRobot v0.6.0を検証するためのリポジトリ
+
+## LeRobot v0.6.0の更新内容
+
+### 1. 世界モデル（World Models）の導入
+
+行動を起こす前に将来の状況を「予測・想像」する3つのポリシー（Policy）が追加された。
+
+* **VLA-JEPA**: 潜在空間（Latent space）で将来のフレームを予測。学習時に世界モデルによる監督を受けつつ、推論時の追加計算コストをゼロに抑える。
+* **LingBot-VA**: 映像と行動を自己回帰的（Autoregressive）に同時予測するモデル。
+* **FastWAM**: 映像生成モデルと行動予測モデルを統合し、モデル自身がロールアウト（Rollout）を想定して学習する。
+
+### 2. VLA（Vision-Language-Action）モデルの拡充
+
+* **GR00T N1.7**: NVIDIAのクロスエンボディメント基盤モデルの最新版に対応。バックボーンにCosmos-Reason2-2Bを採用。
+* **MolmoAct2**: Allen Institute for AIによるVLA。ファインチューニング（LoRA含む）から実機ロボット（SO-100/101など）への即時デプロイまでサポート。
+* **EO-1 / Multitask DiT / EVO1**: 低パラメータでリアルタイム動作可能な軽量VLAや、多種多様なタスクに対応するDiffusion Transformer（DiT）ベースのモデルを追加。
+
+### 3. 報酬モデル（Reward Models）APIの統一
+
+ロボットのタスク成功判定や進捗評価を行う統合API（`lerobot.rewards`）が新設された。
+
+* **Robometer**: 100万以上のロボット軌跡データで事前学習された汎用評価モデル。タスクの進行度や成功率をスコア化する。
+* **TOPReward**: 事前学習済みのVLM（Vision-Language Model）を活用し、追加学習なし（Zero-shot）で成功判定を行う。
+
+### 4. データセット機能の強化
+
+* **深度情報のサポート（Depth sensing）**: RealSenseなどの深度カメラに対応し、RGB画像とともに12ビットの深度ストリームを記録・学習可能。
+* **VLMによる自動言語アノテーション**: `lerobot-annotate` CLIにより、VLMが操作映像を視聴してサブタスクや説明文を自動付与する。
+* **データロードの高速化**: 並列デコード処理の最適化などにより、学習時のデータ読み込み速度が最大2倍に向上。
+
+### 5. 評価ベンチマークの統合
+
+統一コマンド `lerobot-eval` から実行可能なシミュレーション環境として、新たに6つのベンチマーク（**LIBERO-plus**, **RoboTwin 2.0**, **RoboCasa365**, **RoboCerebra**, **RoboMME**, **VLABench**）が追加された。
+
+### 6. デプロイと学習インフラの拡張
+
+* **`lerobot-rollout` CLI**: デプロイ専用のCLIツール。動作中に人間が介入して正しい操作を記録するDAgger（Dataset Aggregation）形式のデータ収集に対応。
+* **FSDP（Fully Sharded Data Parallel）**: パラメータや勾配を複数GPUに分散保持させることで、単一GPUのVRAM容量を超える大規模モデルの学習が可能。
+* **HF Jobs**: ローカルのデータセットをクラウドへ転送し、設定フラグ1つでポチッとクラウド学習を実行可能。
+
+### 7. コードベースの軽量化と環境整備
+
+* 基本的なインストールにおける依存関係（Dependencies）を約40%削減し軽量化。
+* Webブラウザ上から物理ロボットのキャリブレーション、遠隔操作（Teleoperation）、学習、デプロイまで完結できるGUIツール「LeLab」を提供。
+
+## エージェントへのお願い
+
+- 回答は日本語の「で・ある」調を使用すること
+- 実装は可読性を優先して、ジュニアエンジニアが理解できるようにコメント・docstringを追記すること
+- コミットはConventional Commitsに準拠し、1行の英語にまとめること
