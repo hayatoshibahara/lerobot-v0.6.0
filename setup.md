@@ -50,7 +50,7 @@
 | ポート | PC が USB 接続したアームを識別する名前 | macOS: `/dev/tty.usbmodem...`、Windows: `COM3` など |
 | アーム ID | キャリブレーション結果を保存する名前 | `my_leader`、`my_follower` |
 
-ポート名は、ステップ 2 でシェル変数に保存する。`my_follower` と `my_leader` は分かりやすい任意の名前でよいが、キャリブレーション後は収録・評価を含むすべてのコマンドで同じ名前を使う。
+ポート名は、ステップ 2 でメモ帳などのテキストエディタに書き留める。`my_follower` と `my_leader` は分かりやすい任意の名前でよいが、キャリブレーション後は収録・評価を含むすべてのコマンドで同じ名前を使う。
 
 ## ステップ 1: 作業環境を開始する
 
@@ -76,43 +76,27 @@ lerobot-calibrate --help
 lerobot-find-port
 ```
 
-表示に従い、片方のアームの USB ケーブルを抜いて `Enter` を押す。表示されたポート名を、どちらのアームか分かるように記録する。もう一方のアームについても同じ操作を行う。
+表示に従い、片方のアームの USB ケーブルを抜いて `Enter` を押す。表示されたポート名を、どちらのアームのものか分かるようにメモ帳などのテキストエディタへ書き留める。もう一方のアームについても同じ操作を行う。
 
-macOS では `/dev/tty.usbmodem...`、Windows では `COM3` のような名前が表示される。確認したポート名を、次のコマンドでこのターミナルだけで有効な環境変数へ保存する。
+macOS では `/dev/tty.usbmodem...`、Windows では `COM3` のような名前が表示される。書き留める例を示す。
 
 macOS:
 
-```bash
-export FOLLOWER_PORT="/dev/tty.usbmodemXXXXXXXX"
-export LEADER_PORT="/dev/tty.usbmodemYYYYYYYY"
+```text
+フォロワー: /dev/tty.usbmodemXXXXXXXX
+リーダー:   /dev/tty.usbmodemYYYYYYYY
 ```
 
 Windows（Miniforge Prompt）:
 
-```bat
-set FOLLOWER_PORT=COM3
-set LEADER_PORT=COM4
-```
-
-設定した値を確認する。
-
-macOS:
-
-```bash
-echo "$FOLLOWER_PORT"
-echo "$LEADER_PORT"
-```
-
-Windows（Miniforge Prompt）:
-
-```bat
-echo %FOLLOWER_PORT%
-echo %LEADER_PORT%
+```text
+フォロワー: COM3
+リーダー:   COM4
 ```
 
 ポート名は USB の差し替え先によって変わることがある。
 
-以降のコマンドでは macOS で `$FOLLOWER_PORT`、`$LEADER_PORT` を参照する。Windows の Miniforge Prompt では、それぞれ `%FOLLOWER_PORT%`、`%LEADER_PORT%` に読み替える。ターミナルまたは Miniforge Prompt を閉じると変数は消えるため、次回はこのステップの変数設定だけをもう一度実行する。
+以降のコマンドに出てくる `<FOLLOWER_PORT>`、`<LEADER_PORT>` は、メモ帳に書き留めた実際のポート名にそのつど置き換えて実行する。環境変数は使わないため、ターミナルや Miniforge Prompt を閉じても値はメモ帳を見れば分かる。
 
 ### `lerobot-find-port` がアームを見つけない場合
 
@@ -131,7 +115,7 @@ echo %LEADER_PORT%
 ```bash
 lerobot-setup-motors \
   --robot.type=so101_follower \
-  --robot.port=$FOLLOWER_PORT
+  --robot.port=<FOLLOWER_PORT>
 ```
 
 画面に表示された順に、指定されたモーターだけを接続して `Enter` を押す。完了後は、フォロワーの配線図どおりにモーターをデイジーチェーン接続し直す。
@@ -143,7 +127,7 @@ lerobot-setup-motors \
 ```bash
 lerobot-setup-motors \
   --teleop.type=so101_leader \
-  --teleop.port=$LEADER_PORT
+  --teleop.port=<LEADER_PORT>
 ```
 
 完了後、リーダーも配線図どおりに接続し直す。エラーが出た場合は、電源、USB ケーブル、3 ピンのモーターケーブルが確実に接続されているかを確認する。
@@ -163,7 +147,7 @@ lerobot-setup-motors \
 ```bash
 lerobot-calibrate \
   --robot.type=so101_follower \
-  --robot.port=$FOLLOWER_PORT \
+  --robot.port=<FOLLOWER_PORT> \
   --robot.id=my_follower
 ```
 
@@ -172,7 +156,7 @@ lerobot-calibrate \
 ```bash
 lerobot-calibrate \
   --teleop.type=so101_leader \
-  --teleop.port=$LEADER_PORT \
+  --teleop.port=<LEADER_PORT> \
   --teleop.id=my_leader
 ```
 
@@ -192,8 +176,8 @@ lerobot-calibrate \
 キャリブレーションが終わったら、アーム ID とポート名を記録する。
 
 ```text
-フォロワー: port=$FOLLOWER_PORT, id=my_follower
-リーダー:   port=$LEADER_PORT, id=my_leader
+フォロワー: port=<FOLLOWER_PORT>, id=my_follower
+リーダー:   port=<LEADER_PORT>, id=my_leader
 ```
 
 関節を交換した、組み立てを変更した、またはリーダーとフォロワーの同じ姿勢で大きくずれる場合は、両方を再キャリブレーションする。
@@ -205,10 +189,10 @@ lerobot-calibrate \
 ```bash
 lerobot-teleoperate \
   --robot.type=so101_follower \
-  --robot.port=$FOLLOWER_PORT \
+  --robot.port=<FOLLOWER_PORT> \
   --robot.id=my_follower \
   --teleop.type=so101_leader \
-  --teleop.port=$LEADER_PORT \
+  --teleop.port=<LEADER_PORT> \
   --teleop.id=my_leader
 ```
 
@@ -233,11 +217,11 @@ lerobot-find-cameras opencv
 ```bash
 lerobot-teleoperate \
   --robot.type=so101_follower \
-  --robot.port=$FOLLOWER_PORT \
+  --robot.port=<FOLLOWER_PORT> \
   --robot.id=my_follower \
   --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}, wrist: {type: opencv, index_or_path: 1, width: 640, height: 480, fps: 30}}" \
   --teleop.type=so101_leader \
-  --teleop.port=$LEADER_PORT \
+  --teleop.port=<LEADER_PORT> \
   --teleop.id=my_leader \
   --display_data=true
 ```

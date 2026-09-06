@@ -562,6 +562,8 @@ set TASK_DESCRIPTION=赤い立方体を右側の箱へ入れる
 
 NVIDIA GPU と CUDA 対応 PyTorch をローカル環境へ別途導入済みの場合だけ `POLICY_DEVICE=cuda` を使う。
 
+以下のコマンドに出てくる `<FOLLOWER_PORT>` は、[`setup.md`](./setup.md) の「ステップ 2」でメモ帳に書き留めたフォロワーの実際のポート名に置き換える。環境変数は使わない。
+
 ### 短時間の安全確認をする
 
 対象物を置かず、低リスクな初期姿勢で 10 秒だけ実行する。次は macOS の例である。
@@ -572,7 +574,7 @@ lerobot-rollout \
   --policy.path="$MODEL_REPO_ID" \
   --device="$POLICY_DEVICE" \
   --robot.type=so101_follower \
-  --robot.port="$FOLLOWER_PORT" \
+  --robot.port="<FOLLOWER_PORT>" \
   --robot.id=my_follower \
   --robot.cameras="{front: {type: opencv, index_or_path: $CAMERA_INDEX, width: $CAMERA_WIDTH, height: $CAMERA_HEIGHT, fps: $DATASET_FPS}}" \
   --task="$TASK_DESCRIPTION" \
@@ -597,7 +599,7 @@ lerobot-rollout \
   --policy.path="$MODEL_REPO_ID" \
   --device="$POLICY_DEVICE" \
   --robot.type=so101_follower \
-  --robot.port="$FOLLOWER_PORT" \
+  --robot.port="<FOLLOWER_PORT>" \
   --robot.id=my_follower \
   --robot.cameras="{front: {type: opencv, index_or_path: $CAMERA_INDEX, width: $CAMERA_WIDTH, height: $CAMERA_HEIGHT, fps: $DATASET_FPS}}" \
   --dataset.repo_id="$EVAL_REPO_ID" \
@@ -621,7 +623,7 @@ lerobot-rollout ^
   --policy.path="%MODEL_REPO_ID%" ^
   --device="%POLICY_DEVICE%" ^
   --robot.type=so101_follower ^
-  --robot.port="%FOLLOWER_PORT%" ^
+  --robot.port="<FOLLOWER_PORT>" ^
   --robot.id=my_follower ^
   --robot.cameras="{front: {type: opencv, index_or_path: %CAMERA_INDEX%, width: %CAMERA_WIDTH%, height: %CAMERA_HEIGHT%, fps: %DATASET_FPS%}}" ^
   --dataset.repo_id="%EVAL_REPO_ID%" ^

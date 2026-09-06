@@ -87,26 +87,12 @@ hf --help
 この資料のコマンドでは次の値を使う。
 
 ```text
-フォロワー: port=$FOLLOWER_PORT, id=my_follower
-リーダー:   port=$LEADER_PORT,   id=my_leader
+フォロワー: port=<FOLLOWER_PORT>, id=my_follower
+リーダー:   port=<LEADER_PORT>,   id=my_leader
 カメラ:     front=0, wrist=1, 640x480, 30 FPS
 ```
 
-`$FOLLOWER_PORT` と `$LEADER_PORT` は、[`setup.md`](./setup.md) の「ステップ 2」で設定したシェル変数である。新しいターミナルを開いた場合は、実際のポート名を使ってもう一度設定する。
-
-macOS:
-
-```bash
-export FOLLOWER_PORT="/dev/tty.usbmodemXXXXXXXX"
-export LEADER_PORT="/dev/tty.usbmodemYYYYYYYY"
-```
-
-Windows（Miniforge Prompt）:
-
-```bat
-set FOLLOWER_PORT=COM3
-set LEADER_PORT=COM4
-```
+`<FOLLOWER_PORT>` と `<LEADER_PORT>` は、[`setup.md`](./setup.md) の「ステップ 2」でメモ帳に書き留めた実際のポート名に置き換える。環境変数は使わないため、コマンドを実行するたびにメモ帳の値をそのまま貼り付ける。
 
 ## ステップ 2: Hugging Face アカウントを準備してログインする
 
@@ -246,11 +232,11 @@ set RESET_TIME_S=10
 ```bash
 lerobot-record \
   --robot.type=so101_follower \
-  --robot.port="$FOLLOWER_PORT" \
+  --robot.port="<FOLLOWER_PORT>" \
   --robot.id=my_follower \
   --robot.cameras="{front: {type: opencv, index_or_path: $FRONT_CAMERA_INDEX, width: $CAMERA_WIDTH, height: $CAMERA_HEIGHT, fps: $DATASET_FPS}, wrist: {type: opencv, index_or_path: $WRIST_CAMERA_INDEX, width: $CAMERA_WIDTH, height: $CAMERA_HEIGHT, fps: $DATASET_FPS}}" \
   --teleop.type=so101_leader \
-  --teleop.port="$LEADER_PORT" \
+  --teleop.port="<LEADER_PORT>" \
   --teleop.id=my_leader \
   --display_data=true \
   --dataset.repo_id="$DATASET_REPO_ID" \
@@ -264,7 +250,7 @@ lerobot-record \
   --dataset.no_stamp=true
 ```
 
-Windows では、上のコマンド中の `$FOLLOWER_PORT` のような変数を `%FOLLOWER_PORT%` の形式に読み替える。行継続文字 `\` は使わず、1 行にまとめて実行してもよい。
+Windows では `\` の行継続文字が使えないため、1 行にまとめて実行する。`<FOLLOWER_PORT>` と `<LEADER_PORT>` には、メモ帳に書き留めた実際のポート名（`COM3` など）を入れる。
 
 ### 収録中の操作
 
