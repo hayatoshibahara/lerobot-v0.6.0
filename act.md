@@ -587,7 +587,7 @@ lerobot-rollout \
 
 ### 10 エピソードの選別評価を記録する
 
-短時間の確認に問題がなければ、評価用データセットを作りながら 10 回実行する。評価リポジトリには `eval_` 接頭辞を付け、訓練データと混ぜない。
+短時間の確認に問題がなければ、評価用データセットを作りながら 10 回実行する。評価リポジトリには `eval_` 接頭辞を付け、訓練データと混ぜない。このコマンドは [`dataset.md`](./dataset.md) と同様に公開リポジトリを自動作成する。人物や個人情報が映る可能性を排除できない場合は、末尾に `--dataset.private=true` を追加する。
 
 macOS:
 
@@ -604,7 +604,6 @@ lerobot-rollout \
   --robot.cameras="{front: {type: opencv, index_or_path: $CAMERA_INDEX, width: $CAMERA_WIDTH, height: $CAMERA_HEIGHT, fps: $DATASET_FPS}}" \
   --dataset.repo_id="$EVAL_REPO_ID" \
   --dataset.no_stamp=true \
-  --dataset.private=true \
   --dataset.num_episodes=10 \
   --dataset.episode_time_s=30 \
   --dataset.reset_time_s=10 \
@@ -628,7 +627,6 @@ lerobot-rollout ^
   --robot.cameras="{front: {type: opencv, index_or_path: %CAMERA_INDEX%, width: %CAMERA_WIDTH%, height: %CAMERA_HEIGHT%, fps: %DATASET_FPS%}}" ^
   --dataset.repo_id="%EVAL_REPO_ID%" ^
   --dataset.no_stamp=true ^
-  --dataset.private=true ^
   --dataset.num_episodes=10 ^
   --dataset.episode_time_s=30 ^
   --dataset.reset_time_s=10 ^
